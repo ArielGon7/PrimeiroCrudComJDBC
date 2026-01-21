@@ -1,0 +1,13 @@
+service:
+  db:
+    image: mysql
+    container_name: crudmysql
+    environment:
+      MYSQL_ROOT_PASSWORD: crudroot
+    ports:
+      - "3307:3306"
+    volumes:
+      - devari_data:/var/lib/mysql
+
+volumes:
+  devari_data:
