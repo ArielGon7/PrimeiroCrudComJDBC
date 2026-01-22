@@ -8,4 +8,8 @@ public class ProducerService {
     public static void save(Producer producer){
         ProducerRepository.save(producer);
     }
+
+    public static void delete(Integer id){
+        ProducerRepository.delete(id);
+    }
 }

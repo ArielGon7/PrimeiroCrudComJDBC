@@ -22,4 +22,16 @@ public class ProducerRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public static void delete(Integer id){
+        String sql = "DELETE FROM livro_store.new_table WHERE (id = ? )";
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)){
+        ps.setInt(1, id);
+            int rowsAffected = ps.executeUpdate();
+            log.info("Deleting producer from id '{}', rows affected '{}' ", id, rowsAffected);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
