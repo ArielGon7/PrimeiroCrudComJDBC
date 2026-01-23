@@ -12,4 +12,16 @@ public class ProducerService {
     public static void delete(Integer id){
         ProducerRepository.delete(id);
     }
+
+    public static void update(Producer producer){
+        ProducerRepository.update(producer);
+    }
+
+    public static void findAll(){
+        ProducerRepository.findAll();
+    }
+
+    public static void findById(Integer id){
+        ProducerRepository.findById(id);
+    }
 }

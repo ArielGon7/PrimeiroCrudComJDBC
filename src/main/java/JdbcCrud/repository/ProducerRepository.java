@@ -4,10 +4,10 @@ import JdbcCrud.conn.ConnectionFactory;
 import JdbcCrud.domain.Producer;
 import lombok.extern.log4j.Log4j2;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 public class ProducerRepository {
@@ -33,5 +33,58 @@ public class ProducerRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void update(Producer producer){
+        String sql = "UPDATE livro_store.new_table SET name = ? WHERE (id = ? );";
+        try(Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, producer.getName());
+            ps.setInt(2, producer.getId());
+            int rowsAffected = ps.executeUpdate();
+            log.info("Updating producer '{}', rows affected '{}' ", producer, rowsAffected);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Producer> findAll(){
+        String sql = "SELECT * FROM livro_store.new_table";
+        List<Producer> producers = new ArrayList<>();
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery()) {
+            while(rs.next()){
+                Producer producer = Producer.builder()
+                        .id(rs.getInt("id"))
+                        .name(rs.getString("name"))
+                        .build();
+                producers.add(producer);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return producers;
+    }
+
+    public static Optional<Producer> findById(Integer id){
+        String sql = "SELECT * FROM livro_store.new_table WHERE id = ?;";
+        try(Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    Producer producer = Producer.builder()
+                            .id(rs.getInt("id"))
+                            .name(rs.getString("name"))
+                            .build();
+                    return Optional.of(producer);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
+
     }
 }
