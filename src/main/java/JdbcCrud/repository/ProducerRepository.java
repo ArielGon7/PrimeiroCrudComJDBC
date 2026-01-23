@@ -19,6 +19,7 @@ public class ProducerRepository {
             int rowAffect = ps.executeUpdate();
             log.info("Save producer '{}', Rows Affected '{}'", ps, rowAffect);
         } catch (SQLException e) {
+            log.error("Error while saving producer");
             throw new RuntimeException(e);
         }
     }
@@ -31,6 +32,7 @@ public class ProducerRepository {
             int rowsAffected = ps.executeUpdate();
             log.info("Deleting producer from id '{}', rows affected '{}' ", id, rowsAffected);
         } catch (SQLException e) {
+            log.error("Error while deleting producer");
             throw new RuntimeException(e);
         }
     }
@@ -44,6 +46,7 @@ public class ProducerRepository {
             int rowsAffected = ps.executeUpdate();
             log.info("Updating producer '{}', rows affected '{}' ", producer, rowsAffected);
         } catch (SQLException e) {
+            log.error("Error while updating producer");
             throw new RuntimeException(e);
         }
     }
@@ -61,7 +64,9 @@ public class ProducerRepository {
                         .build();
                 producers.add(producer);
             }
+            log.info("Finding all producer");
         } catch (SQLException e) {
+            log.error("Error while finding all producer");
             throw new RuntimeException(e);
         }
         return producers;
@@ -81,7 +86,9 @@ public class ProducerRepository {
                     return Optional.of(producer);
                 }
             }
+            log.info("Finding producer by id");
         } catch (SQLException e) {
+            log.error("Error while finding by id the producer");
             throw new RuntimeException(e);
         }
         return Optional.empty();

@@ -10,10 +10,12 @@ public class ProducerService {
     }
 
     public static void delete(Integer id){
+        verifyId(id);
         ProducerRepository.delete(id);
     }
 
     public static void update(Producer producer){
+        verifyId(producer.getId());
         ProducerRepository.update(producer);
     }
 
@@ -22,6 +24,13 @@ public class ProducerService {
     }
 
     public static void findById(Integer id){
+        verifyId(id);
         ProducerRepository.findById(id);
+    }
+
+    private static void verifyId(Integer id){
+        if(id == null || id <= 0){
+            throw new IllegalArgumentException("Id invalid, please verify if id exist");
+        }
     }
 }
